@@ -248,6 +248,7 @@ background-color: #c0392b;
 <div class="dropdown-content">
 <a href="#orderingSystem">In-N-Out Ordering System</a>
 <a href="#rockPaperScissors">Rock, Paper, Scissors</a>
+<a href="#bathroomProject">Bathroom Pass</a> <!-- Added Bathroom Project -->
 </div>
 </div>
 <div class="nav-link" onclick="window.location.href='#contact'">Contact</div>
@@ -290,83 +291,53 @@ background-color: #c0392b;
 
 <!-- Rock Paper Scissors -->
 <div id="rockPaperScissors" style="margin-top: 50px; padding: 20px; background-color: #222; border-radius: 10px;">
-  <h3>Rock, Paper, Scissors</h3>
-  <p style="margin-bottom: 10px;">Click to play:</p>
-  <div style="font-size: 3rem; cursor: pointer;">
-    <span onclick="playRPS('rock')" title="Rock">🪨</span>
-    <span onclick="playRPS('paper')" title="Paper">📄</span>
-    <span onclick="playRPS('scissors')" title="Scissors">✂️</span>
-  </div>
-  <div id="rpsResult" style="margin-top: 20px; font-size: 1.2rem;"></div>
+<h3>Rock, Paper, Scissors</h3>
+<p style="margin-bottom: 10px;">Click to play:</p>
+<div style="font-size: 3rem; cursor: pointer;">
+<span onclick="playRPS('rock')" title="Rock">🪨</span>
+<span onclick="playRPS('paper')" title="Paper">📄</span>
+<span onclick="playRPS('scissors')" title="Scissors">✂️</span>
+</div>
+<div id="rpsResult" style="margin-top: 20px; font-size: 1.2rem;"></div>
+</div>
+
+<!-- Bathroom Pass Project -->
+<div id="bathroomProject" style="margin-top: 50px; padding: 20px; background-color: #222; border-radius: 10px;">
+<h3>Bathroom Pass</h3>
+<p>Manage bathroom passes for students with time logging.</p>
+<button onclick="bathroom()">Start Bathroom Pass</button>
+<div id="bathroomLog" style="margin-top: 20px;"></div>
 </div>
 
 </div>
 </div>
 
 <script>
-const menu = [
-["Hamburger", 3.69],
-["Cheeseburger", 4.19],
-["Double-Double", 5.89],
-["French Fries", 2.79],
-["Combo #1 (Double-Double, Fries, Drink)", 11.44],
-["Combo #2 (Cheeseburger, Fries, Drink)", 9.29],
-["Combo #3 (Hamburger, Fries, Drink)", 8.89],
-["Animal Style Burger", 5.70],
-["Animal Style Fries", 6.00]
-];
+// Bathroom Pass Project
+let bathroomLog = [];
 
-let total = 0;
+function bathroom() {
+    const name = prompt("What is your name?");
+    const status = prompt("Are you leaving or returning?").toLowerCase();
 
-function placeOrder() {
-const input = document.getElementById("orderInput").value.trim().toLowerCase();
-const outputDiv = document.getElementById("output");
-let found = false;
-
-for (let i = 0; i < menu.length; i++) {
-if (input === menu[i][0].toLowerCase()) {
-total += menu[i][1];
-outputDiv.innerHTML += `<p>You ordered: <strong>${menu[i][0]}</strong> - $${menu[i][1].toFixed(2)}</p>`;
-found = true;
-break;
-}
-}
-
-if (!found) {
-outputDiv.innerHTML += `<p style="color:red;">Sorry, that item is not on the menu.</p>`;
-}
-
-let orderAgain = confirm("Do you want to order again?");
-if (!orderAgain) {
-outputDiv.innerHTML += `<h2>Your final total is: $${total.toFixed(2)}</h2>`;
-alert("Have a horrible day >:) Your total is $" + total.toFixed(2));
-document.getElementById("orderInput").disabled = true;
-} else {
-document.getElementById("orderInput").value = "";
-}
-}
-
-function playRPS(userChoice) {
-    const choices = ["rock", "paper", "scissors"];
-    const emojis = { rock: "🪨", paper: "📄", scissors: "✂️" };
-    const computerChoice = choices[Math.floor(Math.random() * choices.length)];
-    const resultDiv = document.getElementById("rpsResult");
-
-    let result = `The computer chose <strong>${emojis[computerChoice]} ${computerChoice}</strong>. `;
-
-    if (userChoice === computerChoice) {
-        result += "It's a tie!";
-    } else if (
-        (userChoice === "rock" && computerChoice === "scissors") ||
-        (userChoice === "paper" && computerChoice === "rock") ||
-        (userChoice === "scissors" && computerChoice === "paper")
-    ) {
-        result += "You win!";
+    if (status === "leaving") {
+        const leaveTime = new Date();
+        alert(`${name} left at ${leaveTime.toLocaleString()}`);
+        prompt("Press Enter when you return...");
+        const returnTime = new Date();
+        const duration = (returnTime - leaveTime) / 1000;
+        bathroomLog.push(`${name} left at ${leaveTime.toLocaleString()}`);
+        bathroomLog.push(`${name} returned at ${returnTime.toLocaleString()}`);
+        bathroomLog.push(`Time gone: ${duration} seconds`);
+        alert(`${name} returned at ${returnTime.toLocaleString()}`);
     } else {
-        result += "You lose!";
+        const currentTime = new Date();
+        bathroomLog.push(`${name} ${status} at ${currentTime.toLocaleString()}`);
+        alert(`${name} ${status} at ${currentTime.toLocaleString()}`);
     }
 
-    resultDiv.innerHTML = `<p>${result}</p>`;
+    const logDiv = document.getElementById("bathroomLog");
+    logDiv.innerHTML = `<h4>Bathroom Log:</h4><pre>${bathroomLog.join("\n")}</pre>`;
 }
 </script>
 
