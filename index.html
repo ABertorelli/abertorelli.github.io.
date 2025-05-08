@@ -247,6 +247,7 @@ background-color: #c0392b;
 <div class="nav-link">Projects</div>
 <div class="dropdown-content">
 <a href="#orderingSystem">In-N-Out Ordering System</a>
+<a href="#rockPaperScissors">Rock, Paper, Scissors</a>
 </div>
 </div>
 <div class="nav-link" onclick="window.location.href='#contact'">Contact</div>
@@ -263,14 +264,12 @@ background-color: #c0392b;
 <!-- Projects Section -->
 <div id="projects" class="section-container">
 <div class="section-header">Projects</div>
-
 <div class="section-content">
 <p>Explore my various creative and innovative projects!</p>
 
 <!-- In-N-Out Ordering System -->
 <div id="orderingSystem" style="margin-top: 50px; padding: 20px; background-color: #222; border-radius: 10px;">
 <h3>In-N-Out Ordering System</h3>
-
 <div class="menu">
 <h4>Menu:</h4>
 <div>Hamburger - $3.69</div>
@@ -286,9 +285,21 @@ background-color: #c0392b;
 
 <input type="text" id="orderInput" class="order-input" placeholder="Type your order here...">
 <button onclick="placeOrder()">Order</button>
-
 <div id="output" style="margin-top: 20px;"></div>
 </div>
+
+<!-- Rock Paper Scissors -->
+<div id="rockPaperScissors" style="margin-top: 50px; padding: 20px; background-color: #222; border-radius: 10px;">
+  <h3>Rock, Paper, Scissors</h3>
+  <p style="margin-bottom: 10px;">Click to play:</p>
+  <div style="font-size: 3rem; cursor: pointer;">
+    <span onclick="playRPS('rock')" title="Rock">🪨</span>
+    <span onclick="playRPS('paper')" title="Paper">📄</span>
+    <span onclick="playRPS('scissors')" title="Scissors">✂️</span>
+  </div>
+  <div id="rpsResult" style="margin-top: 20px; font-size: 1.2rem;"></div>
+</div>
+
 </div>
 </div>
 
@@ -333,6 +344,29 @@ document.getElementById("orderInput").disabled = true;
 } else {
 document.getElementById("orderInput").value = "";
 }
+}
+
+function playRPS(userChoice) {
+    const choices = ["rock", "paper", "scissors"];
+    const emojis = { rock: "🪨", paper: "📄", scissors: "✂️" };
+    const computerChoice = choices[Math.floor(Math.random() * choices.length)];
+    const resultDiv = document.getElementById("rpsResult");
+
+    let result = `The computer chose <strong>${emojis[computerChoice]} ${computerChoice}</strong>. `;
+
+    if (userChoice === computerChoice) {
+        result += "It's a tie!";
+    } else if (
+        (userChoice === "rock" && computerChoice === "scissors") ||
+        (userChoice === "paper" && computerChoice === "rock") ||
+        (userChoice === "scissors" && computerChoice === "paper")
+    ) {
+        result += "You win!";
+    } else {
+        result += "You lose!";
+    }
+
+    resultDiv.innerHTML = `<p>${result}</p>`;
 }
 </script>
 
